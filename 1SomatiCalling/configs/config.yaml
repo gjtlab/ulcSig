@@ -1,0 +1,30 @@
+input_data: configs/input_bams.tsv
+
+resources:
+  genome: /data/ulc/hg38/bwa_mem2/hg38.fa.gz
+  genome_dict: /data/ulc/hg38/hg38.dict
+  known_vcfs: ["/data/ulc/GATK_reaource/hg38_v0/dbsnp_146.hg38.vcf.gz",
+              "/data/ulc/GATK_reaource/hg38_v0/Mills_and_1000G_gold_standard.indels.hg38.vcf.gz",
+              "/data/ulc/GATK_reaource/hg38_v0/1000G_phase1.snps.high_confidence.hg38.vcf.gz"]
+  snpdb: /data/ulc/GATK_reaource/somatic-hg38/af-only-gnomad.hg38.vcf.gz
+  pon: /data/ulc/NIPT/cfDNA/1000G_nipt_PRJNA954988_normal_pon.hg38.vcf.gz
+  intervals: /data/ulc/GATK_reaource/hg38_v0/wgs_calling_regions.hg38.interval_list
+
+processing:
+  mark_duplicates: true
+  # Uncomment and point to a bed file with, e.g., captured regions if necessary,
+  # see https://gatkforums.broadinstitute.org/gatk/discussion/4133/when-should-i-use-l-to-pass-in-a-list-of-intervals.
+  restrict_regions: /data/ulc/GATK_reaource/hg38_v0/wgs_calling_regions.hg38.interval_list
+  # If regions are restricted, uncomment this to enlarge them by the given value in order to include
+  # flanking areas.
+  #region_padding: 100
+
+params:
+  fastp:
+    length_required: 36
+  bwaMem2: "" #-M 参数用于标记次要比对（secondary alignments），该标记对于某些下游应用（特别是 Picard 工具集）至关重要。
+  sambamba: ""
+  gatk:
+    mem: 4096
+    BaseRecalibrator: ""
+

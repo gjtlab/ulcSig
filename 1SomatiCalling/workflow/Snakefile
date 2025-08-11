@@ -1,0 +1,26 @@
+include: "rules/common.smk"
+
+configfile: "configs/config.yaml"
+
+# ruleorder: fastp_pe > fastp_se > multiqc
+
+# ruleorder: fastp_pe > fastp_se > multiqc > bwa_mem2_mem > sambamba_markdup > sambamba_merge
+
+rule all:
+      input:
+        expand(
+            "results/{u.tumor_sample}.mutect.vcf.gz",
+            u = input_data.itertuples(),
+        ),
+        expand(
+            "results/{u.tumor_sample}.mutect.filtered.vcf.gz",
+            u = input_data.itertuples(),
+        ),
+        expand(
+            "results/{u.tumor_sample}.mutect.filtered.split.norm.vcf.gz",
+            u = input_data.itertuples(),
+        )
+
+##### Modules #####
+
+include: "rules/bam2vcf.smk"

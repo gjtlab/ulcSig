@@ -1,0 +1,25 @@
+input_data: configs/input_data.tsv
+
+resources:
+  genome: /data/ulc/hg38/bwa_mem2/hg38.fa.gz
+  genome_dict: /data/ulc/hg38/hg38.dict
+  known_vcfs: ["/data/ulc/GATK_reaource/hg38_v0/dbsnp_146.hg38.vcf.gz",
+              "/data/ulc/GATK_reaource/hg38_v0/Mills_and_1000G_gold_standard.indels.hg38.vcf.gz",
+              "/data/ulc/GATK_reaource/hg38_v0/1000G_phase1.snps.high_confidence.hg38.vcf.gz"]
+  interval_region: /data/ulc/GATK_reaource/hg38_v0/wgs_calling_regions.hg38.interval_list
+  interval_padding: 0
+
+params:
+  fastp:
+    skip: false  # 是否跳过fastp
+    extra: ""  # 其他fastp参数
+    adapters: ""  # adapter序列，如果需要
+  bwaMem2:
+    mem: "-M"  # -M 参数用于标记次要比对（secondary alignments），该标记对于某些下游应用（特别是 Picard 工具集）至关重要。
+  sambamba:
+    markdup_extra: "--hash-table-size 2621440 --sort-buffer-size 102400 --overflow-list-size 600000"
+  gatk:
+    mem: 4096
+    BaseRecalibrator: ""
+    use_spark: false
+  tmpdir: "results/tmp"
